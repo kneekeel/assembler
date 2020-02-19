@@ -37,4 +37,3 @@ your program, as described in the
 When you are ready to submit your work, click on the "Turn In"
 button. (You should still be able to push further changes to Kit
 after turning an assignment in if you need to.)
-
