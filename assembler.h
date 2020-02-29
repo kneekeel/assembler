@@ -22,4 +22,16 @@ int getNTokens (char * instructionBuffer, int N, char * results[]);
 LabelTable pass1 (FILE * fp);
 void pass2 (FILE * fp, LabelTable table);
 
+void assemblerR(char * instName, char * restOfInstruction,
+                        int lineNum);
+
+void assemblerI(char * instName, char * restOfInstruction,
+                        int lineNum, LabelTable table);
+
+void assemblerJ(char * instName, char * restOfInstruction,
+                        int lineNum, LabelTable table);
+
+void printBinary(int num, int maxPow);
+int getRegNum(char *reg);
+
 #endif

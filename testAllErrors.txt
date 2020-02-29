@@ -1,0 +1,11 @@
+invalidInstName $a0, $a1, $a2
+add $a0, $notReg $a1
+add $a0, $a1, $t0, $tooManyReg
+add $a0, $notEnoughReg
+srl $a0, $notReg, 3
+sll $a1, $a0, 32 #out of bounds shamt
+lui $invReg, 45454
+lui $t0, 66666 # immediate out of bounds
+bne $a0, $a1, end # invalid address/label 
+j loop # invalid address/label
+jal function, $a0 #too many "tokens"

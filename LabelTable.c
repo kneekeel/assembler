@@ -103,6 +103,7 @@ int findLabel (LabelTable * table, char * label)
     return -1;    
 }
 
+
 int addLabel (LabelTable * table, char * label, int progCounter)
   /* Postcondition: if label was already in table, the table is 
    *      unchanged; otherwise a new entry has been added to the 

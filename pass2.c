@@ -8,22 +8,36 @@
  *              containing it (assuming the first line of input
  *              corresponds to address 0)
  *
- * DESCRIPTION MISSING !
+ * The pass2 function will read each line of instruction, determine its format
+ * type and then print either its corresponding machine code or error, using one
+ * of the 3 assembler functions for: R-Format, I-Format, or J-Format.
+ * 
+ * The processFormat(...) function will determine which format the instruction
+ * belongs to and pass the format type back to processInstruction(...) which
+ * will pass the correct parameters into one of the assembler format type
+ * functions/will return an error if instruction doesn't belong to any 
+ * format type.
  *
- * Author: <author>
- * Date:   <date>
- *
- * Modified by:  
- *      Why?
+ * Author: Nikhil Sodemba
+ * Date:   Feb, 20th, 2020
  *
  */
 
 #include "assembler.h"
 
-/* Declaration of stub function defined later in this file. */
+/* Declaration of helper function - processInstruction, defined later in this file. */
 void processInstruction(char * instName, char * restOfInstruction,
-                        int lineNum, int PC);
+                        int lineNum, LabelTable table);
 
+/* Declaration of helper function - processFormat, defined later in thie file */
+int processFormat(char * instName);
+
+/**
+ * Main for the pass2 function.
+ * 
+ * Takes in the file pointer and the lable table (generated from pass1) as arguments
+ * in the parameters.
+ */
 void pass2 (FILE * fp, LabelTable table)
   /* returns a copy of the label table that was constructed */
 {
@@ -73,38 +87,115 @@ void pass2 (FILE * fp, LabelTable table)
         instrName = tokBegin;
         tokBegin = tokEnd + 1;
 
-        printDebug ("first non-label token is: %s\n", instrName);
+        // print current instruction
+        printDebug("\nLine #%d: %s, %s\n", lineNum, instrName, tokBegin);
 
-        /* CALL STUB CODE TO PROCESS INSTRUCTION !!! */
-        processInstruction(instrName, tokBegin, lineNum, PC);
-
+        processInstruction(instrName, tokBegin, lineNum, table);
     }
 
     return;
 }
 
-/* STUB CODE !!!
-* For now, assume we don't care what type of instruction it
-* is, instead just assume all instructions have 3 arguments.
-*/
+/**
+ * This function will process the given instruction and determine 
+ * which format type the instruction belongs to (using processFormat(...)).
+ * Once the function determines which format type the instruction belongs to,
+ * it will call the appropiate function to process the instruction into 
+ * its binary representation (Machine Code).
+ * 
+ * The function takes 4 arguments: instName, restOfInstruction, lineNum, and table.
+ * 
+ * Will print error to stderr, if the given instruction doesn't belong to any
+ * legitimate format type.
+ * 
+ */
 void processInstruction(char * instName, char * restOfInstruction,
-                        int lineNum, int PC)
+                        int lineNum, LabelTable table)
 {
-    char * arguments[3];           /* registers or values after name */
-
-    /* Get the 3 arguments.  (Bad assumption, but this is just a stub.) */
-    if ( ! getNTokens(restOfInstruction, 3, arguments) )
+    // Call processFormat function to identify format type.
+    int formatResult = processFormat(instName);
+    if(formatResult == 0)
     {
-        /* When getNTokens encounters an error, it puts a pointer
-         * to the error message in arguments[0].
-         */
-        printError("Error on line %d: %s\n", lineNum, arguments[0]);
-        return;
+        printDebug("\tThe instruction is of R-Format.\n");
+        assemblerR(instName, restOfInstruction, lineNum);
     }
-
-    /* Print the instruction name and the 3 arguments. */
-    printDebug("Line %d: %s %s, %s, %s\n", lineNum, instName,
-                        arguments[0], arguments[1], arguments[2]);
-
+    else if(formatResult == 1)
+    {
+        printDebug("\tThe instruction is of I-Format.\n");
+        assemblerI(instName, restOfInstruction, lineNum, table);
+    }
+    else if(formatResult == 2)
+    {
+        printDebug("\tThe instruction is of J-Format.\n");
+        assemblerJ(instName, restOfInstruction, lineNum, table);
+    }
+    else if(formatResult == -1)
+    {
+        printError("\nError on line: %d. Invalid instruction: '%s'.\n", lineNum, instName);
+    }
     return;
+}
+
+/**
+ * This function will return the format type for the given instruction,
+ * can be one of the following: R-Format, I-Format, J-Format, and invalid Format.
+ * 
+ * The function takes in one argument as a parameter, the given instruction 
+ * name for the given instruction line. I.e. instName = "add"
+ * 
+ * Returns 0 for R-Format, 1 for I-Format, 2 for J-Format 
+ * and -1 for an invalid instruction name, not beloning to any of the 3
+ * valid format types. 
+ * 
+ */
+int processFormat(char * instName)
+{
+    // Local Variables for the posible format types
+    // R-Format options array
+    char * rFormat [] = 
+    {
+        "add", "addu", "sub", "subu", "and", "or", "nor", "slt",
+        "sltu", "sll", "srl", "jr"
+    };
+    // I-Format options array
+    char * iFormat [] = 
+    {
+        "beq", "bne", "addi", "addiu", "andi", "ori", "slti", "sltiu",
+        "lui", "lw", "sw"
+    };
+    // J-Format options array
+    char * jFormat [] =
+    {
+        "j", "jal"
+    };
+    int i; // constant to loop through the arrays
+
+    // Loop through the arrays
+    for(i = 0; i < 12; i++)
+    {
+        // R-Format array
+        if(strcmp(rFormat[i], instName) == 0)
+        {
+            return 0;
+        }
+        // I-Format array
+        if(i < 11)
+        {
+            if(strcmp(iFormat[i], instName) == 0)
+            {
+                return 1;
+            }
+        }
+        // J-Format array
+        if(i < 2)
+        {
+            if(strcmp(jFormat[i], instName) == 0)
+            {
+                return 2;
+            }
+        }
+    }
+    // Invalid-Instruction name, proper error handling will be dealt 
+    // in processInstruction function.
+    return -1;
 }

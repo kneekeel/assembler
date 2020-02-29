@@ -1,0 +1,25 @@
+main: add $a0, $t0, $t1
+addu $a1, $t2, $t3
+sub $a0, $a1, $zero
+subu $v0, $t1, $t2
+and $t0, $a1, $a2
+or $s0, $t4, $t5
+nor $t5, $t7, $t8
+loop: slt $t5, $t3, $t2
+sltu $a0, $a1, $a2
+sll $t5, $t4, 10
+srl $t4, $t5, 10
+jr $ra
+bne $t1, $t2, finish
+beq $t3, $t1, finish
+addi $t1, $t2, 300
+addiu $s0, $s1, 5000
+andi $t0, $s2, 400
+ori $s3, $s4, 600
+slti $t1, $t2, 50
+sltiu $t3, $t4, 800
+finish: lui $t1, 500
+lw $t2, 4004($t0)
+sw $t1, 5024($t2)
+j loop
+jal main

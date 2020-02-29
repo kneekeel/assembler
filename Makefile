@@ -4,12 +4,12 @@ GCC=gcc -Wall -Wextra -Wpedantic -Wformat -Wshadow -Wredundant-decls \
     -Wstrict-prototypes
 # Can also use -Wtraditional or -Wmissing-prototypes
 
-all:	testLabelTable
+# all:	testLabelTable
 
 #  Switch to alternative versions of the all target as you're ready for them.
 # all:	testLabelTable testgetNTokens
 # all:	testLabelTable testgetNTokens testPass1
-# all:	testLabelTable testgetNTokens testPass1 assembler
+all:	testLabelTable testgetNTokens testPass1 assembler
 
 testLabelTable: assembler.h \
 	LabelTable.o \
@@ -53,12 +53,17 @@ assembler: 	assembler.h \
 	getNTokens.o \
 	pass1.o \
 	pass2.o \
+	assemblerR.o \
+	assemblerI.o \
+	assemblerJ.o \
+	assemblerUtil.o \
 	printDebug.o \
 	printError.o \
 	same.o \
 	assembler.o
 	$(GCC) -g LabelTable.o process_arguments.o \
-	    getNTokens.o getToken.o pass1.o pass2.o \
+	    getNTokens.o getToken.o pass1.o pass2.o assemblerR.o assemblerUtil.o \
+		assemblerI.o assemblerJ.o \
 	    printDebug.o printError.o same.o assembler.o -o assembler
 
 assembler.h: same.h LabelTable.h getToken.h printFuncs.h process_arguments.h
@@ -66,6 +71,18 @@ assembler.h: same.h LabelTable.h getToken.h printFuncs.h process_arguments.h
 
 same.o: same.h same.c
 	$(GCC) -c -g same.c 
+
+assemblerUtil.o: assemblerUtil.h assemblerUtil.c
+	$(GCC) -c -g assemblerUtil.c
+
+assemblerR.o: assemblerR.h assemblerR.c
+	$(GCC) -c -g assemblerR.c
+
+assemblerI.o: assemblerI.h assemblerI.c
+	$(GCC) -c -g assemblerI.c
+
+assemblerJ.o: assemblerJ.h assemblerJ.c
+	$(GCC) -c -g assemblerJ.c
 
 LabelTable.o: LabelTable.h LabelTable.c
 	$(GCC) -c -g LabelTable.c 
@@ -97,7 +114,7 @@ pass1.o: assembler.h pass1.c
 testPass1.o: assembler.h testPass1.c
 	$(GCC) -c -g testPass1.c
 
-pass2.o: assembler.h pass2.c
+pass2.o: assembler.h pass2.c 
 	$(GCC) -c -g pass2.c
 
 assembler.o: assembler.h assembler.c
