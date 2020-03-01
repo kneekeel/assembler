@@ -80,3 +80,5 @@ An assembler is important because it gives instructions to a machine (computer/p
 - This file is intended to test all of the format type instructions in the program.
 
 Feel free to experiment with the program, using any of the provided files or your own assembly language instruction files.
+
+You can also see the input in all of the files in their corresponding files and see the output in their respective ".out" files

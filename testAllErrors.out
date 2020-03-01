@@ -1,0 +1,22 @@
+
+Error on line: 1. Invalid instruction: 'invalidInstName'.
+
+Error: Invalid register at line 2
+
+Error on line 3: Instruction contains more tokens than expected.
+
+Error on line 4: Instruction contains fewer tokens than expected.
+
+Error, Invalid register at line 5
+
+Error: Shamt out of range at Line 6
+
+Error: Invalid Register at line 7
+
+Error: Immediate value is out of range at line 8
+
+Error: Invalid label not contained in label table, at line 9
+
+Error: Invalid label not contained in label table, at line 10
+
+Error on line 11: Instruction contains more tokens than expected.

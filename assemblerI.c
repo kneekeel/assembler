@@ -31,6 +31,7 @@ void assemblerI(char * instName, char * restOfInstruction,int lineNum, LabelTabl
     char * arguments[3];    /* registers or values after instruction name */
 
     // lineNum subtracted by 1, because we start from line 1, therefore PC != 0 at line 1
+    // refer to pass2, where in the first loop, the lineNum is initiated to 1
     int PC = (lineNum-1) * 4;
 
     // variable to store the opcode integer
