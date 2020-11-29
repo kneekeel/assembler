@@ -2,7 +2,15 @@
 
 ## Created by: Nikhil Sodemba
 
-Welcome to the assembler program. This programs main use is to act as a compiler for the transition from assembly language to machine language.
+### Refer to this project for educational purposes only
+
+The following link is the instructions needed to carry out the functionality of this project: [Assembler Programming Project](https://www.cs.kzoo.edu/cs230/Projects/AssemblerProj.html)
+
+Marks received for project: 108.75 / 110.0 points (98.86%)
+
+### Welcome to the assembler program
+
+This programs main use is to act as a compiler for the transition from assembly language to machine language.
 
 An assembler is important because it gives instructions to a machine (computer/phone/ect.), in a format which that machine can comprehend. It is one of the many forms of compilers which exists in the real world today. It is crucial to understand how assembly language is transmittd to machine language.
 
